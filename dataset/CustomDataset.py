@@ -115,10 +115,10 @@ class PointCloudDataset(Dataset):
         points = points / dist #scale
 
         if self.mode == 'train':
-            points = self.random_rotate(points, 0.2)
-            points = self.random_jitter(points, 0.5)
+            points = self.random_rotate(points, 0)
+            points = self.random_jitter(points, 0)
         elif self.mode == 'val':
-            points = self.random_rotate(points, 0.2)
+            points = self.random_rotate(points, 0)
             # points = self.random_jitter(points, 0.5)
         else:
             pass
@@ -133,15 +133,18 @@ class PointCloudDataset(Dataset):
         return len(self.id_list)
     
     def random_rotate(self, points, threshold):
-        # a, b, c = np.random.randint(low=-32, high=33, size=3)
-        # if a != 0:
-        #     a = np.pi/a
-        # if b != 0:
-        #     b = np.pi/b
-        # if c != 0:
-        #     c = np.pi/c
         prob = np.random.rand(1)
         if prob > threshold:
+            # better validation score
+            # a, b, c = np.random.randint(low=-32, high=33, size=3)
+            # if a != 0:
+            #     a = np.pi/a
+            # if b != 0:
+            #     b = np.pi/b
+            # if c != 0:
+            #     c = np.pi/c
+            
+            # need to test this on testset
             a, b, c = np.random.uniform(-1*np.pi, np.pi, 3)
             mx = np.array([[1, 0, 0], [0, np.cos(a), -np.sin(a)], [0, np.sin(a), np.cos(a)]])
             my = np.array([[np.cos(b), 0, np.sin(b)], [0, 1, 0], [-np.sin(b), 0, np.cos(b)]])
